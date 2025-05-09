@@ -1,12 +1,11 @@
-
 if (typeof window.sheeridVNModifierActive === 'undefined') {
     window.sheeridVNModifierActive = true;
-
+    
     window.originalFetchIfNotStored = window.originalFetchIfNotStored || window.fetch;
-
+    
     console.log("%c 🇻🇳 SheerID VN Modifier đã kích hoạt! ", "background: #20c997; color: white; font-weight: bold; padding: 5px;");
     console.log("Script này sẽ thay đổi mọi tham số country thành VN cho các request tới SheerID");
-
+    
     const modifyCountryParam = (url) => {
         if (typeof url !== 'string') return url;
         const urlObj = new URL(url, location.origin);
@@ -17,7 +16,7 @@ if (typeof window.sheeridVNModifierActive === 'undefined') {
         }
         return url;
     };
-
+    
     window.fetch = function (input, init) {
         if (typeof input === 'string' && input.includes("orgsearch.sheerid.net/rest/organization/search")) {
             console.log("🔍 Đã phát hiện request dạng string URL:", input);
@@ -27,7 +26,7 @@ if (typeof window.sheeridVNModifierActive === 'undefined') {
             if (url.includes("orgsearch.sheerid.net/rest/organization/search")) {
                 console.log("🔍 Đã phát hiện Request URL:", url);
                 const newUrl = modifyCountryParam(url);
-
+                
                 const newRequest = new Request(newUrl, {
                     method: input.method,
                     headers: input.headers,
@@ -47,7 +46,7 @@ if (typeof window.sheeridVNModifierActive === 'undefined') {
         }
         return window.originalFetchIfNotStored.call(this, input, init);
     };
-
+    
     const indicator = document.createElement('div');
     indicator.style.position = 'fixed';
     indicator.style.bottom = '10px';
@@ -62,7 +61,7 @@ if (typeof window.sheeridVNModifierActive === 'undefined') {
     indicator.style.fontFamily = '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
     indicator.innerHTML = '🇻🇳 SheerID VN Modifier <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background-color:#1e90ff;margin-left:3px;"></span> | Diệp Văn Tiến';
     document.body.appendChild(indicator);
-
+    
     indicator.onclick = function() {
         if (window.confirm('Bạn có muốn tắt SheerID VN Modifier không?')) {
             window.fetch = window.originalFetchIfNotStored;
@@ -71,7 +70,7 @@ if (typeof window.sheeridVNModifierActive === 'undefined') {
             console.log("%c 🛑 SheerID VN Modifier đã bị tắt ", "background: #dc3545; color: white; font-weight: bold; padding: 5px;");
         }
     };
-
+    
 } else {
     if (window.sheeridVNModifierActive) {
         console.log("%c ⚠️ SheerID VN Modifier đã được kích hoạt rồi ", "background: #ffc107; color: black; font-weight: bold; padding: 5px;");
